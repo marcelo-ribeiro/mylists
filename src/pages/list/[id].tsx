@@ -35,7 +35,7 @@ export default function List() {
   const listId = router.query.id as string;
   const [user, setUser] = useState<User>(null);
   const { items } = useItems(!!user ? listId : null);
-  const cardModal = useRef<HTMLIonModalElement>(null);
+  const modalRef = useRef<HTMLIonModalElement>(null);
   const [list, setList] = useState<IList>(null);
   const [isReady, setIsReady] = useState(false);
   const [modal, setModal] = useState<any>({});
@@ -135,7 +135,7 @@ export default function List() {
   };
 
   const dismiss = () => {
-    cardModal.current?.dismiss();
+    modalRef.current?.dismiss();
     setModal((modal: any) => ({ ...modal, isOpen: false }));
   };
 
@@ -335,7 +335,7 @@ export default function List() {
         </section>
       </ion-content>
 
-      <ion-modal is-open={modal.isOpen} id="card-modal" ref={cardModal}>
+      <ion-modal is-open={modal.isOpen} id="card-modal" ref={modalRef}>
         <ion-header class="ion-no-border" translucent>
           <ion-toolbar>
             <ion-buttons slot="end">
