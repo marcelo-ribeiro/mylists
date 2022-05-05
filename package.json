@@ -1,7 +1,14 @@
 {
   "name": "ionic-react-example",
+  "description": "An Ionic project",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "export": "next export -o build"
+  },
   "dependencies": {
     "@capacitor/app": "1.1.1",
     "@capacitor/core": "3.5.0",
@@ -38,11 +45,10 @@
     "workbox-strategies": "^5.1.4",
     "workbox-streams": "^5.1.4"
   },
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "export": "next export -o build"
+  "devDependencies": {
+    "@capacitor/cli": "3.5.0",
+    "copy-webpack-plugin": "^10.2.4",
+    "sass": "^1.51.0"
   },
   "eslintConfig": {
     "extends": [
@@ -62,10 +68,7 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "@capacitor/cli": "3.5.0",
-    "copy-webpack-plugin": "^10.2.4",
-    "sass": "^1.51.0"
-  },
-  "description": "An Ionic project"
+  "cacheDirectories": [
+    ".next/cache"
+  ]
 }
