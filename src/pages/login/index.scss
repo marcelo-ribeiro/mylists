@@ -1,0 +1,43 @@
+.ion-page {
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.logo__icon {
+  // color: var(--app-color-white-alpha);
+  width: 4rem;
+  height: 4rem;
+  margin-right: 0.5rem;
+  font-size: 4rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+h5 {
+  // color: var(--app-color-white-alpha);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.actions {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 2rem;
+}
+
+ion-button {
+  margin: 0;
+  height: 2.75rem;
+}

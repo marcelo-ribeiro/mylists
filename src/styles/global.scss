@@ -1,0 +1,103 @@
+//
+
+// html {
+// font-size: 16px;
+// }
+
+body {
+  letter-spacing: 0.025em;
+}
+
+p {
+  &:first-child {
+    margin-top: 0;
+  }
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+b,
+strong {
+  font-weight: 500;
+}
+
+// IONIC OVERRIDES
+// ===============
+.subheader {
+  --min-height: 2rem;
+
+  ion-title {
+    font-size: 1rem;
+  }
+}
+
+ion-content {
+  --padding-bottom: 5.5rem;
+}
+
+ion-title {
+  font-size: 1.25rem;
+}
+
+ion-button {
+  margin: 0;
+}
+
+ion-item {
+  // --padding-start: 20px;
+  // --inner-padding-end: 20px;
+  --color: var(--ion-text-color);
+  --border-color: var(--ion-border-color);
+}
+
+ion-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--ion-color-light);
+  width: 3rem;
+  height: 3rem;
+
+  ion-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+// .my-list ion-label {
+//   margin: 12px 0 11px !important;
+//   font-size: 1rem !important;
+
+//   > ion-text {
+//     display: block;
+//     line-height: calc(1em + 0.5rem) !important;
+//   }
+// }
+
+// .my-list p {
+//   font-size: 0.875rem !important;
+//   line-height: calc(1em + 0.5rem) !important;
+// }
+
+// .my-list.my-list--inner {
+//   padding: 0;
+// }
+
+// ion-text {
+//   .my-list & {
+//     font-weight: 500;
+//   }
+// }
+
+ion-note {
+  font-size: 0.75rem;
+}
+
+// ion-fab {
+//   right: 16px;
+
+//   &:not(.fab-edge) {
+//     bottom: 12px;
+//   }
+// }
