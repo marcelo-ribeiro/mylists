@@ -3,7 +3,7 @@ import { IItem, IList } from "core/list.model";
 import { User } from "core/user.model";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   addListItem,
   deleteList,
@@ -35,7 +35,7 @@ export default function List() {
   const listId = router.query.id as string;
   const [user, setUser] = useState<User>(null);
   const { items } = useItems(!!user ? listId : null);
-  const modalRef = useRef<HTMLIonModalElement>(null);
+  const modalRef = document.querySelector("#modal") as HTMLIonModalElement;
   const [list, setList] = useState<IList>(null);
   const [isReady, setIsReady] = useState(false);
   const [modal, setModal] = useState<any>({});
@@ -135,7 +135,7 @@ export default function List() {
   };
 
   const dismiss = () => {
-    modalRef.current?.dismiss();
+    modalRef?.dismiss();
     setModal((modal: any) => ({ ...modal, isOpen: false }));
   };
 
@@ -335,7 +335,7 @@ export default function List() {
         </section>
       </ion-content>
 
-      <ion-modal is-open={modal.isOpen} id="card-modal" ref={modalRef}>
+      <ion-modal id="modal" is-open={modal.isOpen}>
         <ion-header class="ion-no-border" translucent>
           <ion-toolbar>
             <ion-buttons slot="end">

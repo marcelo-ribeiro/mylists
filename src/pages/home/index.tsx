@@ -3,7 +3,7 @@ import { IList } from "core/list.model";
 import { User } from "core/user.model";
 import { getAuth } from "firebase/auth";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { presentAlertPrompt } from "services/ionic";
 import { addList, updateList } from "services/lists";
 
@@ -11,10 +11,9 @@ const auth = getAuth();
 
 export default function Home() {
   const router = useRouter();
-  const ionList = useRef<HTMLIonListElement>(null);
-  // const [lists, setLists] = useState<IList[]>(null);
   const [user, setUser] = useState<User>(null);
   const { lists } = useLists();
+  const ionList = document.querySelector("#list") as HTMLIonListElement;
 
   const handlePrompt = async (list: IList = null) => {
     const handleSubmit = async (data: any) => {
@@ -23,7 +22,7 @@ export default function Home() {
       else await addList(data);
     };
     await presentAlertPrompt(list, handleSubmit);
-    ionList.current?.closeSlidingItems();
+    ionList?.closeSlidingItems?.();
   };
 
   const remove = (id: String) => {
@@ -69,7 +68,7 @@ export default function Home() {
 
         <section className="my-wrapper-list">
           {!!lists?.length && (
-            <ion-list class="my-list my-list--root" lines="none" ref={ionList}>
+            <ion-list id="list" class="my-list my-list--root" lines="none">
               {lists.map((list: any) => (
                 <ion-item-sliding key={list.id}>
                   <ion-item
