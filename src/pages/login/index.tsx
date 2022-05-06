@@ -1,4 +1,5 @@
-import { auth, googleLogin } from "core/auth";
+import { googleLogin } from "core/auth";
+import { auth } from "core/firebase";
 import { useRouter } from "next/router";
 console.log("auth", auth);
 

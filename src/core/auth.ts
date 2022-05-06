@@ -1,13 +1,10 @@
 import {
-  getAuth,
   GoogleAuthProvider,
   RecaptchaVerifier,
   signInWithPhoneNumber,
   signInWithPopup,
 } from "firebase/auth";
-
-export const auth = getAuth();
-console.log({ auth });
+import { auth } from "./firebase";
 
 const getRecaptchaVerifier = () => {
   return new RecaptchaVerifier(

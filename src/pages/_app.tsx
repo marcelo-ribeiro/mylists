@@ -7,7 +7,7 @@ import { defineCustomElements as ionDefineCustomElements } from "@ionic/core/loa
 import "core/firebase";
 
 import { ListsProvider } from "contexts/lists";
-import { auth } from "core/auth";
+import { auth } from "core/firebase";
 import { User } from "core/user.model";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/router";

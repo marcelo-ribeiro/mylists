@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { getAnalytics } from "firebase/analytics";
 import { getApps, initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -22,6 +23,7 @@ const firebaseConfig = {
 export let firestore;
 export let storage;
 export let analytics;
+export let auth;
 
 if (!getApps().length) {
   const firebaseApp = initializeApp(firebaseConfig);
@@ -30,5 +32,6 @@ if (!getApps().length) {
     analytics = getAnalytics();
     storage = getStorage();
     firestore = getFirestore();
+    auth = getAuth();
   }
 }

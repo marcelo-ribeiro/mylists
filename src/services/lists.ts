@@ -1,11 +1,10 @@
-import { auth } from "core/auth";
 import firebaseClient, {
   create,
   getAllRealtime,
   remove,
   save,
 } from "core/client";
-import { firestore } from "core/firebase";
+import { auth, firestore } from "core/firebase";
 import { IItem, IList } from "core/list.model";
 import { collection } from "firebase/firestore";
 

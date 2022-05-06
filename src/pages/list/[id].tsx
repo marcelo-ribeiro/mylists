@@ -1,4 +1,4 @@
-import { auth } from "core/auth";
+import { auth } from "core/firebase";
 import { IItem, IList } from "core/list.model";
 import { User } from "core/user.model";
 import { onAuthStateChanged } from "firebase/auth";
