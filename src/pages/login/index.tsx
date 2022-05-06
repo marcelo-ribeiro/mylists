@@ -1,17 +1,11 @@
 import { googleLogin } from "core/auth";
-import { auth } from "core/firebase";
 import { useRouter } from "next/router";
-console.log("auth", auth);
 
 export default function Login() {
   const router = useRouter();
 
   const login = async () => {
-    console.log("login");
-
     const response = await googleLogin();
-    console.log({ response });
-
     if (response.user) {
       router.push("/");
     }
