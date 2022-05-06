@@ -63,7 +63,7 @@ export const getListsItemsRealtime = (
   return getAllRealtime(path, callback);
 };
 
-export const addListItem = async (listId: string, data: IItem) => {
+export const addListItem = async (listId: string, { id, ...data }: IItem) => {
   const path = `users/${auth.currentUser?.uid}/lists/${listId}/items`;
   return create(path, data);
 };
