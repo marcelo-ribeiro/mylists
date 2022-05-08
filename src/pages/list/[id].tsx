@@ -3,7 +3,7 @@ import { IItem, IList } from "core/list.model";
 import { User } from "core/user.model";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   addListItem,
   deleteList,
@@ -19,10 +19,8 @@ export const useItems = (listId: string) => {
 
   useEffect(() => {
     if (!listId) return;
-    const unsubscribe = getListsItemsRealtime(setItems, listId);
-    return () => {
-      unsubscribe();
-    };
+    const unsubscribe = getListsItemsRealtime(listId, setItems);
+    return () => unsubscribe();
   }, [listId]);
 
   return {
@@ -35,21 +33,10 @@ export default function List() {
   const listId = router.query.id as string;
   const [user, setUser] = useState<User>(null);
   const { items } = useItems(!!user ? listId : null);
-  const modalRef = document.querySelector("#modal") as HTMLIonModalElement;
   const [list, setList] = useState<IList>(null);
   const [isReady, setIsReady] = useState(false);
   const [modal, setModal] = useState<any>({});
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        router.replace("/login");
-      }
-    });
-    return () => unsubscribe();
-  }, []);
+  const modalRef = document.querySelector("#modal") as HTMLIonModalElement;
 
   const sum = useMemo(() => {
     if (!items || !items.length) return 0;
@@ -74,44 +61,34 @@ export default function List() {
       price: item.price || 0,
       quantity: item.quantity || 1,
     };
-
     await addListItem(list.id, item);
-
-    // Update the parent doc
-    await updateList({
-      ...list,
-      total: sum,
-      itemsLength: itemsCount,
-    });
   };
 
   const update = async (item: IItem) => {
     await updateListItem(list.id, item);
+  };
 
-    // Update the parent doc
+  const handleUpdateList = useCallback(async () => {
+    console.log("handleUpdateList", {
+      ...list,
+      total: sum,
+      itemsLength: itemsCount,
+    });
+
     await updateList({
       ...list,
       total: sum,
       itemsLength: itemsCount,
     });
-  };
+  }, [itemsCount, sum]);
 
   const handleDeleteItem = async (itemId: string) => {
     await deleteListItem(list.id, itemId);
-
-    // Update the parent doc
-    updateList({
-      ...list,
-      total: sum,
-      itemsLength: itemsCount,
-    });
   };
 
   const handleDeleteList = async () => {
-    this.location.back();
-    const loading = await this.presentLoading();
+    router.back();
     await deleteList(list.id);
-    loading.dismiss();
   };
 
   const presentModal = async (event: any, item?: IItem) => {
@@ -169,13 +146,30 @@ export default function List() {
   };
 
   useEffect(() => {
-    if (!user) return;
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        router.replace("/login");
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
-    getList(listId).then((list: any) => {
+  useEffect(() => {
+    console.log("useEffect getList");
+
+    if (!user) return;
+    getList(listId).then(async (list: IList) => {
       setIsReady(true);
       setList(list);
     });
   }, [user]);
+
+  useEffect(() => {
+    if (!isReady) return;
+    handleUpdateList();
+  }, [items]);
 
   return (
     <>

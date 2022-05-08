@@ -37,12 +37,14 @@ export const addList = async (data: IList) => {
 };
 
 export const updateList = async (data: IList) => {
+  console.log("updateList", data);
   const path = `users/${auth.currentUser?.uid}/lists`;
   return save(path, data);
 };
 
 export const deleteList = async (listId: string) => {
-  return listsCollection.doc(listId).delete();
+  const path = `users/${auth.currentUser?.uid}/lists`;
+  return remove(path, listId);
 };
 
 //
@@ -55,8 +57,8 @@ export const getListItems = async (listId: string) => {
 };
 
 export const getListsItemsRealtime = (
-  callback: (data: any[]) => void,
-  listId: string
+  listId: string,
+  callback: (data: any[]) => void
 ) => {
   const path = `users/${auth.currentUser?.uid}/lists/${listId}/items`;
   return getAllRealtime(path, callback);

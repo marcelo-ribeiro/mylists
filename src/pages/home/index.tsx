@@ -1,17 +1,11 @@
 import { useLists } from "contexts/lists";
 import { IList } from "core/list.model";
-import { User } from "core/user.model";
-import { getAuth } from "firebase/auth";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import { presentAlertPrompt } from "services/ionic";
 import { addList, updateList } from "services/lists";
 
-const auth = getAuth();
-
 export default function Home() {
   const router = useRouter();
-  const [user, setUser] = useState<User>(null);
   const { lists } = useLists();
   const ionList = document.querySelector("#list") as HTMLIonListElement;
 
@@ -25,21 +19,9 @@ export default function Home() {
     ionList?.closeSlidingItems?.();
   };
 
-  const remove = (id: String) => {
-    console.log(id);
-  };
-
   const goToDetails = (listId: string) => {
     router.push(`/list/${listId}`);
   };
-
-  // useEffect(() => {
-  //   console.log({ user, lists });
-  //   if (!user) return;
-  //   console.log("useEffect getLists()");
-  //   const unsubscribe = getLists();
-  //   return () => unsubscribe();
-  // }, [user]);
 
   return (
     <>
