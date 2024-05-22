@@ -69,18 +69,39 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         {/* add to homescreen for ios */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="theme-color" content="#000000" />
+        <link rel="manifest" href="/manifest.json" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/assets/icon/icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/assets/icon/icon.png"
+        />
         {/* <link
+          rel="mask-icon"
+          href="/icons/safari-pinned-tab.svg"
+          color="#5bbad5"
+        /> */}
+        <link rel="shortcut icon" href="/assets/icon/favicon.png" />
+
+        <link
           href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap"
           rel="stylesheet"
-        /> */}
+        />
 
         {/* <script
           type="module"
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
         ></script> */}
 
-        <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+        {/* <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script> */}
       </Head>
       <ion-app>
         {!user ? (
