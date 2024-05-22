@@ -348,7 +348,7 @@ export default function List() {
       <ion-modal
         id="modal"
         is-open={modal.isOpen}
-        onDidDismiss={() => dismiss()}
+        onWillDismiss={() => dismiss()}
       >
         <ion-header class="ion-no-border" translucent>
           <ion-toolbar>
