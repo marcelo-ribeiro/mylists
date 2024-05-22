@@ -74,12 +74,6 @@ export default function List() {
   };
 
   const handleUpdateList = useCallback(async () => {
-    console.log("handleUpdateList", {
-      ...list,
-      total: sum,
-      itemsLength: itemsCount,
-    });
-
     await updateList({
       ...list,
       total: sum,
@@ -131,12 +125,12 @@ export default function List() {
       date,
       isChecked: false,
     };
+    dismiss();
     if (isEdit) {
       await update(item);
     } else {
       await add(item);
     }
-    dismiss();
   };
 
   const changeFormItem = (event: any) => {
