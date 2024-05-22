@@ -19,8 +19,6 @@ import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
 import { firestore, storage } from "./firebase";
 
 const transformData = (doc: QueryDocumentSnapshot<DocumentData>) => {
-  console.log({ doc });
-
   const data: any = {
     id: doc.id,
     ...doc.data(),
@@ -81,7 +79,7 @@ export const saveDoc = async (ref: any, data: any) => {
 export const save = async (table: string, { id, ...data }: any) => {
   data.updated = serverTimestamp();
   const ref = doc(firestore, table, id);
-  await setDoc(ref, data);
+  await setDoc(ref, data, { merge: true });
 };
 
 export const remove = async (path: string, docId: string) => {
