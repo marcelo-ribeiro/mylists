@@ -13,6 +13,11 @@ import {
   updateList,
   updateListItem,
 } from "services/lists";
+import {
+  formatCurrency,
+  formatCurrencyToNumber,
+  formatNumber,
+} from "utils/formatNumber";
 
 export const useItems = (listId: string) => {
   const [items, setItems] = useState<IItem[]>(null);
@@ -104,8 +109,8 @@ export default function List() {
         headerTitle: item ? "Editar item" : "Adicionar item",
         isEdit: !!item,
         name: item?.name ?? "",
-        price: item?.price ?? 0,
-        quantity: item?.quantity ?? 0,
+        price: formatNumber(item?.price) ?? 0,
+        quantity: item?.quantity ?? 1,
         date: item?.date ?? "",
       },
     }));
@@ -121,8 +126,8 @@ export default function List() {
     const item: IItem = {
       id,
       name,
-      price,
-      quantity,
+      price: formatCurrencyToNumber(price),
+      quantity: Number(quantity),
       date,
       isChecked: false,
     };
@@ -136,11 +141,18 @@ export default function List() {
 
   const changeFormItem = (event: any) => {
     const { componentProps } = modal;
+    const { name, value } = event.target;
+    let formattedValue = value;
+
+    if (name === "price") {
+      formattedValue = value;
+    }
+
     setModal((modal: any) => ({
       ...modal,
       componentProps: {
         ...componentProps,
-        [event.target.name]: event.target.value,
+        [name]: formattedValue,
       },
     }));
   };
@@ -203,17 +215,19 @@ export default function List() {
           {!!items?.length && (
             <ion-title>
               {sum !== 0 && (
-                <>
+                <strong>
                   <ion-text class="list__sum" color="primary">
-                    {sum}
+                    {formatCurrency(sum)}
                   </ion-text>
-                  <ion-text color="medium">
-                    &nbsp;&nbsp;&mdash;&nbsp;&nbsp;
-                  </ion-text>
-                </>
+                  <ion-text color="medium">&nbsp;&nbsp;</ion-text>
+                </strong>
               )}
               <ion-text color="medium">
-                {itemsCount} {itemsCount > 1 ? "itens" : "item"}
+                {itemsCount === 0
+                  ? "Nenhum item"
+                  : itemsCount === 1
+                  ? `(${itemsCount} item)`
+                  : `(${itemsCount} itens)`}
               </ion-text>
             </ion-title>
           )}
@@ -247,33 +261,35 @@ export default function List() {
                 <ion-item-sliding key={item.id}>
                   <ion-item
                     button
-                    onClick={() => {
-                      item.isChecked = !item.isChecked;
-                      update(item);
-                    }}
+                    onClick={(event) => presentModal(event, item)}
                   >
                     <ion-checkbox
                       slot="start"
                       name={item.id}
                       checked={item.isChecked}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        item.isChecked = !item.isChecked;
+                        update(item);
+                      }}
                     />
 
-                    <ion-label
-                      class="ion-text-wrap"
-                      onClick={(event) => presentModal(event, item)}
-                    >
+                    <ion-label class="ion-text-wrap">
                       <ion-text>{item.name}</ion-text>
 
                       <p>
                         {item.quantity >= 2 && (
-                          <ion-text>
-                            {item.price * item.quantity} ({item.quantity}x{" "}
-                            {item.price})
+                          <ion-text style={{ display: "flex", gap: 24 }}>
+                            <span>
+                              {formatCurrency(item.price * item.quantity)}
+                            </span>
+                            <span>Itens: {item.quantity}</span>
+                            <span>Preço: {formatCurrency(item.price)}</span>
                           </ion-text>
                         )}
 
                         {item.quantity <= 1 && (
-                          <ion-text>{item.price}</ion-text>
+                          <ion-text>{formatCurrency(item.price)}</ion-text>
                         )}
                       </p>
                     </ion-label>
@@ -329,7 +345,11 @@ export default function List() {
         </section>
       </ion-content>
 
-      <ion-modal id="modal" is-open={modal.isOpen}>
+      <ion-modal
+        id="modal"
+        is-open={modal.isOpen}
+        onDidDismiss={() => dismiss()}
+      >
         <ion-header class="ion-no-border" translucent>
           <ion-toolbar>
             <ion-buttons slot="end">
@@ -355,16 +375,18 @@ export default function List() {
                   name="name"
                   value={modal.componentProps?.name}
                   onInput={changeFormItem}
+                  autoCapitalize="words"
                 />
               </ion-item>
 
               <ion-item>
                 <ion-label position="fixed">Preço</ion-label>
                 <ion-input
-                  type="tel"
+                  type="text"
                   name="price"
                   value={modal.componentProps?.price}
                   onInput={changeFormItem}
+                  inputMode="decimal"
                 />
               </ion-item>
 
@@ -383,9 +405,8 @@ export default function List() {
                 <ion-label position="fixed">Data</ion-label>
                 <ion-input
                   type="date"
-                  min="1"
                   name="date"
-                  value={modal.componentProps?.quantity}
+                  value={modal.componentProps?.date}
                   onInput={changeFormItem}
                 />
                 {/* <ion-datetime

@@ -3,6 +3,7 @@ import { IList } from "core/list.model";
 import { useRouter } from "next/router";
 import { presentAlertPrompt } from "services/ionic";
 import { addList, updateList } from "services/lists";
+import { formatCurrency } from "utils/formatNumber";
 
 export default function Home() {
   const router = useRouter();
@@ -19,25 +20,25 @@ export default function Home() {
     ionList?.closeSlidingItems?.();
   };
 
-  const goToDetails = (listId: string) => {
-    router.push(`/list/${listId}`);
-  };
-
   return (
     <>
       <ion-header translucent>
         <ion-toolbar>
-          <ion-title class="home__title" color="medium">
-            Meus orçamentos
+          <ion-title class="home__title" color="dark">
+            <strong>mybudgets</strong>
           </ion-title>
 
-          <ion-buttons slot="end">
-            {/* <Link href="'/user'"> */}
-            <ion-button>
-              <ion-icon color="medium" name="person-outline" slot="icon-only" />
-            </ion-button>
-            {/* </Link> */}
-          </ion-buttons>
+          {/* <ion-buttons slot="end">
+            <Link href="/user">
+              <ion-button>
+                <ion-icon
+                  color="medium"
+                  name="person-outline"
+                  slot="icon-only"
+                />
+              </ion-button>
+            </Link>
+          </ion-buttons> */}
         </ion-toolbar>
       </ion-header>
 
@@ -55,8 +56,8 @@ export default function Home() {
                 <ion-item-sliding key={list.id}>
                   <ion-item
                     button
-                    onClick={() => goToDetails(list.id)}
-                    color=""
+                    onClick={() => router.push(`/list/${list.id}`)}
+                    detail
                   >
                     <ion-avatar slot="start">
                       <ion-icon color="primary" name="reader-outline" />
@@ -66,31 +67,31 @@ export default function Home() {
                       <ion-text color="">{list.name}</ion-text>
 
                       <p>
-                        {list.itemsLength > 0 ? (
-                          <ion-text color="medium">
-                            {list.itemsLength}{" "}
-                            {list.itemsLength > 1 ? "itens" : "item"}
-                          </ion-text>
-                        ) : (
-                          <ion-text color="medium">Nenhum item</ion-text>
-                        )}
-
                         {!!list.total && (
                           <>
-                            <ion-text color="medium">
-                              &nbsp;&mdash;&nbsp;
+                            <ion-text color="">
+                              {formatCurrency(list.total)}
                             </ion-text>
-                            <ion-text color="">{list.total}</ion-text>
+                            <ion-text color="medium">&nbsp;&nbsp;</ion-text>
                           </>
                         )}
+
+                        <ion-text color="medium">
+                          {!list.itemsLength || list.itemsLength === 0 ? (
+                            "Nenhum item"
+                          ) : list.itemsLength === 1 ? (
+                            <>({list.itemsLength} item)</>
+                          ) : (
+                            <>({list.itemsLength} itens)</>
+                          )}
+                        </ion-text>
                       </p>
                     </ion-label>
                   </ion-item>
 
                   <ion-item-options side="end">
                     <ion-item-option
-                      onClick={(event) => {
-                        console.log(event);
+                      onClick={() => {
                         handlePrompt(list);
                       }}
                       color="medium"

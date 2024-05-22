@@ -4,18 +4,11 @@ import firebaseClient, {
   remove,
   save,
 } from "core/client";
-import { auth, firestore } from "core/firebase";
+import { auth } from "core/firebase";
 import { IItem, IList } from "core/list.model";
-import { collection } from "firebase/firestore";
-
-export let listsCollection;
-
-// usersCollection = collection(getFirestore(), "users");
-// console.log({ usersCollection });
 
 export const getLists = async (): Promise<IList[]> => {
   const path = `users/${auth.currentUser.uid}/lists`;
-  listsCollection = collection(firestore, path);
   const lists = await firebaseClient.getAll(path);
   return lists as IList[];
 };
@@ -37,7 +30,6 @@ export const addList = async (data: IList) => {
 };
 
 export const updateList = async (data: IList) => {
-  console.log("updateList", data);
   const path = `users/${auth.currentUser?.uid}/lists`;
   return save(path, data);
 };

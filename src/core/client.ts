@@ -42,14 +42,11 @@ export const getAllRealtime = (
   path: string,
   callback: (data: any[]) => void
 ): Unsubscribe => {
-  console.log("getAllRealtime", path);
   const collectionRef = collection(firestore, path);
-  const queryRef = query(collectionRef, orderBy("updated", "desc"));
+  const queryRef = query(collectionRef, orderBy("created", "desc"));
   const unsubscribe = onSnapshot(queryRef, (snapshot) => {
-    console.log({ snapshot });
     const data = [];
     snapshot.forEach((doc) => {
-      console.log({ docID: doc.id });
       data.push({ id: doc.id, ...doc.data() });
     });
     callback?.(data);

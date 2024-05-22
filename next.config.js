@@ -6,6 +6,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 module.exports = withPWA({
   pwa: {
     dest: "public",
+    disable: process.env.NODE_ENV === "development",
   },
   webpack: (config) => {
     config.plugins.push(
